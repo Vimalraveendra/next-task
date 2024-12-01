@@ -1,9 +1,10 @@
+import Menu from "@/components/Menu";
 
 
 export default function Home() {
   return (
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-          Next Js
+      <main className="flex justify-center  border-dashed border-2 border-indigo-500 h-dvh ">
+          <Menu/>
       </main>
 
   );
