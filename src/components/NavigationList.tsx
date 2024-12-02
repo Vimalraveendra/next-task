@@ -1,20 +1,32 @@
 "use client"
 
 import Image from "next/image";
+import { ITask } from "@/app/page";
 import NavigationForm from "./NavigationForm";
-import { Task } from "@/app/page";
+
+export interface INavigationListProps {
+    task:ITask,
+    isEdit:boolean,
+    editTaskId:number|null,
+    handleEditTask:(task:ITask)=>void;
+    handleCancelTask:()=>void;
+    handleChangeTask:(e:React.SyntheticEvent<HTMLInputElement>)=>void;
+    handleAddTask:()=>void
+   }
 
 
-const NavigationList = ({task}:{task:Task}) => {
+const NavigationList:React.FC<INavigationListProps> =
+ ({task, isEdit,editTaskId,handleEditTask,handleCancelTask,handleChangeTask,handleAddTask}) => {
+    console.log("task",task)
  
   return (
-    
+      <>
                     <li
-                        className="flex items-center  justify-between py-4 px-6 border-solid border-b border-[#EAECF0] gap-1  bg-white  flex-wrap  cursor-move"
+                        className="flex items-center  justify-between py-4 px-6 border-solid border-b border-[#EAECF0] gap-1  bg-white  flex-wrap  cursor-move rounded-l-md"
                         draggable="true"
                     >
                                <div className="flex items-center ">
-                                    <div className=" w-10 h-10 py-2.5 px-2.5 ">
+                                    <div className=" w-10 h-10 py-2 px-2.5 ">
                                                         <Image
                                                             src="/move.svg"
                                                             alt="plus"
@@ -31,21 +43,46 @@ const NavigationList = ({task}:{task:Task}) => {
                                </div>
                                  
                                 <div className="border-solid border border-[#D0D5DD]  rounded-lg shadow-sm gap-2">
-                                        <button className="border-solid border-r border-[#D0D5DD] py-2 px-4 text-sm font-semibold text-[#344054]">Usuń</button>
-                                        <button className=" border-solid border-r border-[#D0D5DD] py-2 px-4 text-sm font-semibold text-[#344054 ">Edytuj</button>
+                                        <button className="border-solid border-r border-[#D0D5DD] py-2 px-4 text-sm font-semibold text-[#344054]" onClick={handleCancelTask}>Usuń</button>
+                                        <button className=" border-solid border-r border-[#D0D5DD] py-2 px-4 text-sm font-semibold text-[#344054"  onClick={()=>handleEditTask(task)}>Edytuj</button>
                                         <button className="  py-2 px-4 text-sm font-semibold text-[#344054 ">Dodaj pozycję menu</button>    
                                 </div>
-                        
+                              
+                               
                    </li>
-       
-            // {/* <div className="py-5 px-6 gap-2 bg-[#F9FAFB] border-solid border border-[#EAECF0]">
-            //    <NavigationForm  newTask={newTask} handleChangeTask={handleChangeTask}/>
-            // </div> */}
+                    {
+                        ( task.id=== editTaskId && isEdit)&&
+                        <div className=" my-5 mr-6 ml-[64px] bg-white rounded-lg border-solid border border-[#D0D5DD] relative">
+                        <NavigationForm  
+                                newTask={task }      
+                                handleChangeTask={handleChangeTask}
+                                handleAddTask={handleAddTask}
+                                handleCancelTask={handleCancelTask}
+                                />
+                        </div>
+                            
+                        }
+                   
+           {
+            task.subList &&<ul className=" flex  flex-col pl-[68px] rounded-lg ">
+                        {task.subList?.map((item) => (
+                          <NavigationList 
+                          key={item.id} 
+                          task={item} 
+                          isEdit={isEdit}
+                          editTaskId={editTaskId}
+                          handleEditTask={handleEditTask} 
+                          handleCancelTask={handleCancelTask}
+                          handleChangeTask={handleChangeTask}
+                          handleAddTask={handleAddTask}
+                           />
+                        ))}
+       </ul>
+    
+    }
 
-            // <div className=" gap-2 py-5 px-6 bg-transparent">
-            //         <button className="border-solid border border-[#D0D5DD]   text-sm font-semibold text-[#344054 rounded-lg py-2.5 px-3.5 "> Dodaj pozycję menu</button>
-            // </div>
-
+</>       
+    
   )
 }
 
