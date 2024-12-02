@@ -1,19 +1,20 @@
 "use client"
 
-import { Task } from "@/app/page"
+import { ITask } from "@/app/page"
 import Image from "next/image"
 
 export interface Props {
-  newTask:Task,
+  newTask:ITask,
   handleChangeTask :(e:React.SyntheticEvent<HTMLInputElement>)=>void,
   handleAddTask:()=>void;
+  handleCancelTask:()=>void;
  }
 
 
-const NavigationForm:React.FC<Props> = ({newTask,handleChangeTask,handleAddTask}) => {
+const NavigationForm:React.FC<Props> = ({newTask,handleChangeTask,handleAddTask,handleCancelTask}) => {
   return (
-    <div className=" w-full max-w-7xl  mr-5 ml-4 mb-8 h-60 gap-5 pb-5 bg-white rounded-lg border-solid border border-[#D0D5DD]">
-            <div className="flex flex-col pt-5 pl-6 relative">
+         <>
+            <div className="flex flex-col pt-5 pl-6  max-w-[1064px] xl:max-w-[976px] lg:max-w-[80vw] md:max-w-[50vw] ">
                 <label htmlFor="name" className="text-sm font-medium text-[#344054]">Nazwa</label>
                     <input
                     type="text"
@@ -54,10 +55,12 @@ const NavigationForm:React.FC<Props> = ({newTask,handleChangeTask,handleAddTask}
                     </div>
             </div>
             <div className="flex pt-5 pl-6 pb-5  ">
-                <button className="rounded-md border-solid border border-[#D0D5DD] py-2.5 px-3.5 gap-4 m-w-[75px] mr-2 text-sm font-semibold text-[#344054] ">Anuluj</button>
+                <button className="rounded-md border-solid border border-[#D0D5DD] py-2.5 px-3.5 gap-4 m-w-[75px] mr-2 text-sm font-semibold text-[#344054]"onClick={handleCancelTask}  >Anuluj</button>
                 <button className="rounded-md border-solid border border-[#D0D5DD] py-2.5 px-3.5 gap-4 m-w-[75px] text-sm font-semibold text-[#6941C6]" onClick={handleAddTask}>Dodaj</button>
             </div>
-    </div>
+         </>
+            
+    
   )
 }
 
