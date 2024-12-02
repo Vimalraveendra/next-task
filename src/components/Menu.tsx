@@ -3,7 +3,7 @@ import Image from "next/image"
 
 const Menu = () => {
   return (
-    <header className="  max-w-7xl w-full  mr-5 ml-4 mt-6 h-40 bg-gray-50 rounded-lg gap-8 ">
+    <header className="  max-w-7xl w-full  mr-5 ml-4 mt-6 mb-8 h-40 bg-[#F9FAFB] rounded-lg gap-2 ">
          <div className="h-full pt-6  pb-5 max-w-lg mx-auto  flex flex-col items-center justify-between">
              <div className="text-center">
                     <h1 className="text-base font-semibold text-[#101828]">Menu jest puste</h1>
@@ -17,9 +17,7 @@ const Menu = () => {
               height={20}
             />
              <button className="py-2.5 pr-3.5 pl-1 text-sm font-semibold text-[#FFFFFF]">Dodaj pozycję menu</button>
-             </div> 
-           
-              
+             </div>     
            </div>
 </header>
   )
