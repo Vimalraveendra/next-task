@@ -9,21 +9,25 @@ const NavigationForm = () => {
                     <input
                     type="text"
                     placeholder="np.promocje"
-                    className="rounded-md border-solid border border-[#D0D5DD] text-md font-normal  py-2 px-3 gap-8 h-10 max-w-[1064px] mb-2 text-[#667085] placeholder-[#667085]"
+                    className="rounded-lg border-solid border border-[#D0D5DD] text-md font-normal  py-2 px-3.5 gap-2 h-10 max-w-[1064px] mb-2 text-[#667085] placeholder-[#667085]"
                     />
                     <label htmlFor="link" className="text-sm font-medium  text-[#344054]">Link</label>
-                    <input
-                    type="text"
-                    placeholder="Wklej lub wyszukaj"
-                    className="rounded-md border-solid border border-[#D0D5DD] text-md font-normal  py-2 px-3 gap-8 h-10 max-w-[1064px]  text-[#667085] placeholder-[#667085]"
-                    /> 
-                          <Image
-                        src="/search.svg"
-                        alt="plus"
-                        width={20}
-                        height={20}
-                        className="absolute top-20 left-10 text-[#667085] "
-                        />
+                     <div className=" flex items-center rounded-lg border-solid border border-[#D0D5DD] text-md font-normal  py-2 px-3.5 gap-2 h-10 max-w-[1064px]">
+                     <Image
+                              src="/search.svg"
+                              alt="plus"
+                              width={20}
+                              height={20}
+                              className=" text-[#667085] "
+                              />
+                          <input
+                          type="text"
+                          placeholder="Wklej lub wyszukaj"
+                          className="  text-[#667085] placeholder-[#667085] "
+                          /> 
+                             
+                     </div>
+                    
                     <div className="absolute top-5 right-6 w-10 h-10 py-2.5 px-2.5">
                     <Image
                         src="/trash.svg"
