@@ -1,19 +1,31 @@
+"use client"
+
+import { Task } from "@/app/page"
 import Image from "next/image"
 
+export interface Props {
+  newTask:Task,
+  handleChangeTask :(e:React.SyntheticEvent<HTMLInputElement>)=>void,
+  handleAddTask:()=>void;
+ }
 
-const NavigationForm = () => {
+
+const NavigationForm:React.FC<Props> = ({newTask,handleChangeTask,handleAddTask}) => {
   return (
-    <div className=" w-full max-w-7xl  mr-5 ml-4 mt-6 mb-8 h-60 bg-white rounded-lg border-solid border border-[#D0D5DD]">
+    <div className=" w-full max-w-7xl  mr-5 ml-4 mb-8 h-60 gap-5 pb-5 bg-white rounded-lg border-solid border border-[#D0D5DD]">
             <div className="flex flex-col pt-5 pl-6 relative">
                 <label htmlFor="name" className="text-sm font-medium text-[#344054]">Nazwa</label>
                     <input
                     type="text"
                     placeholder="np.promocje"
+                    name="name"
                     className="rounded-lg border-solid border border-[#D0D5DD] text-md font-normal  py-2 px-3.5 gap-2 h-10 max-w-[1064px] mb-2 text-[#667085] placeholder-[#667085]"
+                    value={newTask&&newTask.name}
+                    onChange={handleChangeTask}
                     />
                     <label htmlFor="link" className="text-sm font-medium  text-[#344054]">Link</label>
-                     <div className=" flex items-center rounded-lg border-solid border border-[#D0D5DD] text-md font-normal  py-2 px-3.5 gap-2 h-10 max-w-[1064px]">
-                     <Image
+                     <div className=" flex items-center rounded-lg border-solid border border-[#D0D5DD] text-md font-normal  py-2 px-3.5 gap-2 h-10 max-w-[1064px] focus:outline-blue-500">
+                             <Image
                               src="/search.svg"
                               alt="plus"
                               width={20}
@@ -23,12 +35,15 @@ const NavigationForm = () => {
                           <input
                           type="text"
                           placeholder="Wklej lub wyszukaj"
-                          className="  text-[#667085] placeholder-[#667085] "
+                          name="url"
+                          className="  text-[#667085] placeholder-[#667085] w-full outline-none"
+                          value={newTask&&newTask.url}
+                          onChange={handleChangeTask}
                           /> 
                              
                      </div>
                     
-                    <div className="absolute top-5 right-6 w-10 h-10 py-2.5 px-2.5">
+                    <div className="absolute top-3 right-6 w-10 h-10 py-2.5 px-2.5">
                     <Image
                         src="/trash.svg"
                         alt="plus"
@@ -40,7 +55,7 @@ const NavigationForm = () => {
             </div>
             <div className="flex pt-5 pl-6 pb-5  ">
                 <button className="rounded-md border-solid border border-[#D0D5DD] py-2.5 px-3.5 gap-4 m-w-[75px] mr-2 text-sm font-semibold text-[#344054] ">Anuluj</button>
-                <button className="rounded-md border-solid border border-[#D0D5DD] py-2.5 px-3.5 gap-4 m-w-[75px] text-sm font-semibold text-[#6941C6]">Dodaj</button>
+                <button className="rounded-md border-solid border border-[#D0D5DD] py-2.5 px-3.5 gap-4 m-w-[75px] text-sm font-semibold text-[#6941C6]" onClick={handleAddTask}>Dodaj</button>
             </div>
     </div>
   )
