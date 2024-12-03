@@ -3,22 +3,26 @@
 import Image from "next/image";
 import { ITask } from "@/app/page";
 import NavigationForm from "./NavigationForm";
+import NavigationFormEdit from "./NavigationFormEdit";
 
 export interface INavigationListProps {
     task:ITask,
+    newTask:ITask,
     isEdit:boolean,
     editTaskId:number|null,
+    listId:number|null,
     handleEditTask:(task:ITask)=>void;
     handleCancelTask:()=>void;
     handleChangeTask:(e:React.SyntheticEvent<HTMLInputElement>)=>void;
-    handleAddTask:()=>void
+    handleAddTask:()=>void;
+    handleToggleForm:()=>void
+    handleAddSubList:(task:ITask)=>void
    }
 
 
 const NavigationList:React.FC<INavigationListProps> =
- ({task, isEdit,editTaskId,handleEditTask,handleCancelTask,handleChangeTask,handleAddTask}) => {
-    console.log("task",task)
- 
+ ({task,newTask, isEdit,editTaskId,listId,handleEditTask,handleCancelTask,handleChangeTask,handleAddTask,handleToggleForm,handleAddSubList}) => {
+  
   return (
       <>
                     <li
@@ -45,19 +49,30 @@ const NavigationList:React.FC<INavigationListProps> =
                                 <div className="border-solid border border-[#D0D5DD]  rounded-lg shadow-sm gap-2">
                                         <button className="border-solid border-r border-[#D0D5DD] py-2 px-4 text-sm font-semibold text-[#344054]" onClick={handleCancelTask}>Usuń</button>
                                         <button className=" border-solid border-r border-[#D0D5DD] py-2 px-4 text-sm font-semibold text-[#344054"  onClick={()=>handleEditTask(task)}>Edytuj</button>
-                                        <button className="  py-2 px-4 text-sm font-semibold text-[#344054 ">Dodaj pozycję menu</button>    
+                                        <button className="  py-2 px-4 text-sm font-semibold text-[#344054 " onClick={()=>handleAddSubList(task)}>Dodaj pozycję menu</button>    
                                 </div>
                               
                                
                    </li>
+                   {
+                    (task.id===listId)&&
+                    <div className=" my-5 mr-6 ml-[64px] bg-white rounded-lg border-solid border border-[#D0D5DD] relative">
+                    <NavigationForm  
+                            newTask={newTask }
+                            handleChangeTask={handleChangeTask}
+                            handleAddTask={handleAddTask}
+                            handleCancelTask={handleCancelTask} 
+                            />
+                    </div>
+                   }
                     {
                         ( task.id=== editTaskId && isEdit)&&
                         <div className=" my-5 mr-6 ml-[64px] bg-white rounded-lg border-solid border border-[#D0D5DD] relative">
-                        <NavigationForm  
-                                newTask={task }      
+                        <NavigationFormEdit 
+                                newTask={task }
                                 handleChangeTask={handleChangeTask}
                                 handleAddTask={handleAddTask}
-                                handleCancelTask={handleCancelTask}
+                                handleCancelTask={handleCancelTask} 
                                 />
                         </div>
                             
@@ -69,12 +84,16 @@ const NavigationList:React.FC<INavigationListProps> =
                           <NavigationList 
                           key={item.id} 
                           task={item} 
+                          newTask={newTask}
                           isEdit={isEdit}
                           editTaskId={editTaskId}
+                          listId={listId}
                           handleEditTask={handleEditTask} 
                           handleCancelTask={handleCancelTask}
                           handleChangeTask={handleChangeTask}
                           handleAddTask={handleAddTask}
+                          handleToggleForm={handleToggleForm}
+                          handleAddSubList={handleAddSubList}
                            />
                         ))}
        </ul>
