@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { ITask } from "@/app/page";
 import NavigationForm from "./NavigationForm";
-import NavigationFormEdit from "./NavigationFormEdit";
+
 
 export interface INavigationListProps {
     task:ITask,
@@ -15,14 +15,14 @@ export interface INavigationListProps {
     handleCancelTask:()=>void;
     handleChangeTask:(e:React.SyntheticEvent<HTMLInputElement>)=>void;
     handleAddTask:()=>void;
-    handleToggleForm:()=>void
-    handleAddSubList:(task:ITask)=>void
+    handleToggleForm:()=>void;
+    handleAddSubList:(task:ITask)=>void;
+    handleUpdateTask:()=>void;
    }
 
 
 const NavigationList:React.FC<INavigationListProps> =
- ({task,newTask, isEdit,editTaskId,listId,handleEditTask,handleCancelTask,handleChangeTask,handleAddTask,handleToggleForm,handleAddSubList}) => {
-  
+ ({task,newTask, isEdit,editTaskId,listId,handleEditTask,handleCancelTask,handleChangeTask,handleAddTask,handleToggleForm,handleAddSubList,handleUpdateTask}) => {
   return (
       <>
                     <li
@@ -55,29 +55,18 @@ const NavigationList:React.FC<INavigationListProps> =
                                
                    </li>
                    {
-                    (task.id===listId)&&
+                    (( task.id=== editTaskId && isEdit)||(task.id===listId))&&
                     <div className=" my-5 mr-6 ml-[64px] bg-white rounded-lg border-solid border border-[#D0D5DD] relative">
                     <NavigationForm  
                             newTask={newTask }
+                            editTaskId={editTaskId}
                             handleChangeTask={handleChangeTask}
                             handleAddTask={handleAddTask}
                             handleCancelTask={handleCancelTask} 
+                            handleUpdateTask={handleUpdateTask}
                             />
                     </div>
                    }
-                    {
-                        ( task.id=== editTaskId && isEdit)&&
-                        <div className=" my-5 mr-6 ml-[64px] bg-white rounded-lg border-solid border border-[#D0D5DD] relative">
-                        <NavigationFormEdit 
-                                newTask={task }
-                                handleChangeTask={handleChangeTask}
-                                handleAddTask={handleAddTask}
-                                handleCancelTask={handleCancelTask} 
-                                />
-                        </div>
-                            
-                        }
-                   
            {
             task.subList &&<ul className=" flex  flex-col pl-[68px] rounded-lg ">
                         {task.subList?.map((item) => (
@@ -94,6 +83,7 @@ const NavigationList:React.FC<INavigationListProps> =
                           handleAddTask={handleAddTask}
                           handleToggleForm={handleToggleForm}
                           handleAddSubList={handleAddSubList}
+                          handleUpdateTask={handleUpdateTask}
                            />
                         ))}
        </ul>

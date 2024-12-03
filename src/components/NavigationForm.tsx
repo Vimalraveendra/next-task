@@ -5,14 +5,16 @@ import Image from "next/image"
 
 export interface IFormProps {
   newTask:ITask,
+  editTaskId:number|null;
   handleChangeTask :(e:React.SyntheticEvent<HTMLInputElement>)=>void,
   handleAddTask:()=>void;
   handleCancelTask:()=>void;
+  handleUpdateTask:()=>void;
  }
 
 
 const NavigationForm:React.FC<IFormProps> =
- ({newTask,handleChangeTask,handleAddTask,handleCancelTask}) => {
+ ({newTask,editTaskId,handleChangeTask,handleAddTask,handleCancelTask,handleUpdateTask}) => {
     
   return (
          <>
@@ -58,7 +60,7 @@ const NavigationForm:React.FC<IFormProps> =
             </div>
             <div className="flex pt-5 pl-6 pb-5  ">
                 <button className="rounded-md border-solid border border-[#D0D5DD] py-2.5 px-3.5 gap-4 m-w-[75px] mr-2 text-sm font-semibold text-[#344054]"onClick={handleCancelTask}  >Anuluj</button>
-                <button className="rounded-md border-solid border border-[#D0D5DD] py-2.5 px-3.5 gap-4 m-w-[75px] text-sm font-semibold text-[#6941C6]" onClick={handleAddTask}>Dodaj</button>
+                <button className="rounded-md border-solid border border-[#D0D5DD] py-2.5 px-3.5 gap-4 m-w-[75px] text-sm font-semibold text-[#6941C6]" onClick={()=>editTaskId?handleUpdateTask():handleAddTask()}>Dodaj</button>
             </div>
          </>
             
