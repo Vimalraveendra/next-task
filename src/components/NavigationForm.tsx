@@ -3,7 +3,7 @@
 import { ITask } from "@/app/page"
 import Image from "next/image"
 
-export interface Props {
+export interface IFormProps {
   newTask:ITask,
   handleChangeTask :(e:React.SyntheticEvent<HTMLInputElement>)=>void,
   handleAddTask:()=>void;
@@ -11,7 +11,9 @@ export interface Props {
  }
 
 
-const NavigationForm:React.FC<Props> = ({newTask,handleChangeTask,handleAddTask,handleCancelTask}) => {
+const NavigationForm:React.FC<IFormProps> =
+ ({newTask,handleChangeTask,handleAddTask,handleCancelTask}) => {
+    
   return (
          <>
             <div className="flex flex-col pt-5 pl-6  max-w-[1064px] xl:max-w-[976px] lg:max-w-[80vw] md:max-w-[50vw] ">
@@ -38,7 +40,7 @@ const NavigationForm:React.FC<Props> = ({newTask,handleChangeTask,handleAddTask,
                           placeholder="Wklej lub wyszukaj"
                           name="url"
                           className="  text-[#667085] placeholder-[#667085] w-full outline-none"
-                          value={newTask&&newTask.url}
+                          value={newTask &&newTask.url}
                           onChange={handleChangeTask}
                           /> 
                              
