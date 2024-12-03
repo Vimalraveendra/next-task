@@ -27,6 +27,7 @@ const  Home=()=> {
      const [isEdit,setIsEdit] = useState<boolean>(true)
      const [toggleForm,setToggleForm]=useState<boolean>(false)
      const [listId,setListId]=useState<number|null>(null)
+
      // const [dragItem,setDragItem]=useState<Task|null>(null)
     
 
@@ -39,7 +40,7 @@ const  Home=()=> {
 
      const handleAddTask=()=>{
       if(newTask.name.trim()!=="" && newTask.url.trim()!=="" && listId){
-          const recursiveFn = (tasks:ITask[], listId:number):ITask[] =>
+          const recursiveFn = (tasks:ITask[], listId:number|null):ITask[] =>
             tasks.map((item) => {
               if (item.id === listId) {
                 return { ...item,subList:[ ...item.subList as [],{...newTask,id: Date.now()}] };
@@ -87,6 +88,29 @@ const  Home=()=> {
          setListId(task.id)
      }
     
+     const handleUpdateTask =()=>{
+      if(newTask.name.trim()!==" " && newTask.url.trim()!==" " && editTaskId){
+        const recursiveFn = (tasks:ITask[], editTaskId:number|null):ITask[] =>
+          tasks.map((item) => {
+            if (item.id === editTaskId) {
+              return { ...item,...newTask };
+            } else {
+              let resultArray;
+              if (item.subList) {
+                resultArray = recursiveFn(item.subList, editTaskId);
+              }
+              return item.subList? { ...item ,subList:resultArray} : item;
+            }
+          });
+        const results = recursiveFn(tasks, editTaskId);
+        setTasks(results);
+    }
+      setNewTask(defaultProps)
+        setToggleForm(false)
+        setEditTaskId(null)
+        setListId(null)
+     }
+    
   return (
       <main className="flex  flex-col items-center border-dashed border-2 border-indigo-500 h-dvh overflow-scroll">
         {
@@ -95,8 +119,15 @@ const  Home=()=> {
                   <Menu  handleToggleForm={handleToggleForm}/>
                   {
                      toggleForm &&<div className=" w-full max-w-7xl  mr-5 ml-4 mb-8 h-60 gap-5 pb-5 bg-white rounded-lg border-solid border border-[#D0D5DD] relative ">
-                     <NavigationForm  newTask={newTask}  handleChangeTask={handleChangeTask} handleAddTask={handleAddTask} handleCancelTask={handleCancelTask}/>
-                     </div>
+                        <NavigationForm
+                          newTask={newTask} 
+                          editTaskId={editTaskId}
+                            handleChangeTask={handleChangeTask} 
+                            handleAddTask={handleAddTask} 
+                            handleCancelTask={handleCancelTask}
+                            handleUpdateTask={handleUpdateTask}
+                            />
+                        </div>
                   }
                     
                 </>
@@ -121,6 +152,7 @@ const  Home=()=> {
                       handleCancelTask={handleCancelTask}
                       handleToggleForm={handleToggleForm}
                       handleAddSubList={handleAddSubList}
+                      handleUpdateTask={handleUpdateTask}
                       />
                    ))
                 }
@@ -130,9 +162,11 @@ const  Home=()=> {
                         <div className=" my-5 mx-6  bg-white rounded-lg border-solid border border-[#D0D5DD]"> 
                         <NavigationForm  
                                 newTask={newTask} 
+                                editTaskId={editTaskId}
                                 handleChangeTask={handleChangeTask}
                                  handleAddTask={handleAddTask}
                                  handleCancelTask={handleCancelTask}
+                                 handleUpdateTask={handleUpdateTask}
                                 />
                         </div>
                             
