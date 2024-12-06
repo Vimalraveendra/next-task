@@ -27,8 +27,7 @@ const  Home=()=> {
      const [isEdit,setIsEdit] = useState<boolean>(true)
      const [toggleForm,setToggleForm]=useState<boolean>(false)
      const [listId,setListId]=useState<number|null>(null)
-
-     // const [dragItem,setDragItem]=useState<Task|null>(null)
+     const [draggingItem,setDraggingItem]=useState<ITask|null>(null)
     
 
      const handleChangeTask=(e:SyntheticEvent<HTMLInputElement>)=>{
@@ -112,33 +111,44 @@ const  Home=()=> {
         setListId(null)
      }
 
-     const handleDeleteTask=(id:number):void=>{
-      console.log("tasks",tasks)
-      console.log("id",id)
+     const handleDeleteTask=(id:number|null):void=>{
       const recursiveFn = (tasks:ITask[], id:number|null):ITask[]|[] =>
         tasks.filter((item) => {
           if (item.id !== id) {
-            console.log("item",item)
             let resultArray;
-            console.log("sub",item.subList)
-            console.log("sub",item.subList?.length)
            if (item.subList?.length) {
-            console.log("item1  ",item)
              resultArray = recursiveFn(item.subList, id);
              item.subList=resultArray;
           }
-          console.log("resutl",resultArray)
-          console.log("item2  ",item)
-          console.log("true",item.subList)
           return item
           }
         });
       const results = recursiveFn(tasks, id);
-      console.log("results",results)
       setTasks(results);
      }
 
-     console.log("tasks",tasks)
+
+     const handleDragStart = (item:ITask|null) => {
+      setDraggingItem(item);
+    };
+  
+    const handleDragEnd = () => {
+      setDraggingItem(null);
+    };
+  
+
+    const handleDrop = (targetItem:ITask) => {
+      if (!draggingItem) return;
+  
+      const currentIndex = tasks.indexOf(draggingItem);
+      const targetIndex = tasks.indexOf(targetItem)
+  
+      if (currentIndex !== -1 && targetIndex !== -1) {
+        tasks.splice(currentIndex, 1);
+        tasks.splice(targetIndex, 0, draggingItem);
+        setTasks(tasks);
+      }
+    };
     
   return (
       <main className="flex  flex-col items-center border-dashed border-2 border-indigo-500 h-dvh overflow-scroll">
@@ -183,6 +193,10 @@ const  Home=()=> {
                       handleAddSubList={handleAddSubList}
                       handleUpdateTask={handleUpdateTask}
                       handleDeleteTask={handleDeleteTask}
+                      handleDragStart={handleDragStart}
+                      handleDragEnd={handleDragEnd}
+                      handleDrop={handleDrop}
+
                       />
                    ))
                 }
