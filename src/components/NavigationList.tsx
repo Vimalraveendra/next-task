@@ -18,11 +18,12 @@ export interface INavigationListProps {
     handleToggleForm:()=>void;
     handleAddSubList:(task:ITask)=>void;
     handleUpdateTask:()=>void;
+    handleDeleteTask:(id:number)=>void
    }
 
 
 const NavigationList:React.FC<INavigationListProps> =
- ({task,newTask, isEdit,editTaskId,listId,handleEditTask,handleCancelTask,handleChangeTask,handleAddTask,handleToggleForm,handleAddSubList,handleUpdateTask}) => {
+ ({task,newTask, isEdit,editTaskId,listId,handleEditTask,handleCancelTask,handleChangeTask,handleAddTask,handleToggleForm,handleAddSubList,handleUpdateTask,handleDeleteTask}) => {
   return (
       <>
                     <li
@@ -47,7 +48,7 @@ const NavigationList:React.FC<INavigationListProps> =
                                </div>
                                  
                                 <div className="border-solid border border-[#D0D5DD]  rounded-lg shadow-sm gap-2">
-                                        <button className="border-solid border-r border-[#D0D5DD] py-2 px-4 text-sm font-semibold text-[#344054]" onClick={handleCancelTask}>Usuń</button>
+                                        <button className="border-solid border-r border-[#D0D5DD] py-2 px-4 text-sm font-semibold text-[#344054]" onClick={()=>handleDeleteTask(task.id)}>Usuń</button>
                                         <button className=" border-solid border-r border-[#D0D5DD] py-2 px-4 text-sm font-semibold text-[#344054"  onClick={()=>handleEditTask(task)}>Edytuj</button>
                                         <button className="  py-2 px-4 text-sm font-semibold text-[#344054 " onClick={()=>handleAddSubList(task)}>Dodaj pozycję menu</button>    
                                 </div>
@@ -84,6 +85,7 @@ const NavigationList:React.FC<INavigationListProps> =
                           handleToggleForm={handleToggleForm}
                           handleAddSubList={handleAddSubList}
                           handleUpdateTask={handleUpdateTask}
+                          handleDeleteTask={handleDeleteTask}
                            />
                         ))}
        </ul>

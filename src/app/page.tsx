@@ -8,14 +8,14 @@ import NavigationList from "@/components/NavigationList";
 
 
 export interface ITask {
-  id: number;
+  id: number|null;
   name: string;
   url: string;
   subList?:ITask[]
 }
 
 export const defaultProps:ITask={
-  id:0,
+  id:null,
   name:"",
   url:"",
   subList:[]
@@ -46,10 +46,10 @@ const  Home=()=> {
                 return { ...item,subList:[ ...item.subList as [],{...newTask,id: Date.now()}] };
               } else {
                 let resultArray;
-                if (item.subList) {
+                if (item.subList?.length) {
                   resultArray = recursiveFn(item.subList, listId);
                 }
-                return item.subList? { ...item ,subList:resultArray} : item;
+                return item.subList?.length? { ...item ,subList:resultArray} : item;
               }
             });
           const results = recursiveFn(tasks, listId);
@@ -87,6 +87,7 @@ const  Home=()=> {
          setToggleForm(false);
          setListId(task.id)
      }
+
     
      const handleUpdateTask =()=>{
       if(newTask.name.trim()!==" " && newTask.url.trim()!==" " && editTaskId){
@@ -96,10 +97,10 @@ const  Home=()=> {
               return { ...item,...newTask };
             } else {
               let resultArray;
-              if (item.subList) {
+              if (item.subList?.length) {
                 resultArray = recursiveFn(item.subList, editTaskId);
               }
-              return item.subList? { ...item ,subList:resultArray} : item;
+              return item.subList?.length? { ...item ,subList:resultArray} : item;
             }
           });
         const results = recursiveFn(tasks, editTaskId);
@@ -110,6 +111,34 @@ const  Home=()=> {
         setEditTaskId(null)
         setListId(null)
      }
+
+     const handleDeleteTask=(id:number):void=>{
+      console.log("tasks",tasks)
+      console.log("id",id)
+      const recursiveFn = (tasks:ITask[], id:number|null):ITask[]|[] =>
+        tasks.filter((item) => {
+          if (item.id !== id) {
+            console.log("item",item)
+            let resultArray;
+            console.log("sub",item.subList)
+            console.log("sub",item.subList?.length)
+           if (item.subList?.length) {
+            console.log("item1  ",item)
+             resultArray = recursiveFn(item.subList, id);
+             item.subList=resultArray;
+          }
+          console.log("resutl",resultArray)
+          console.log("item2  ",item)
+          console.log("true",item.subList)
+          return item
+          }
+        });
+      const results = recursiveFn(tasks, id);
+      console.log("results",results)
+      setTasks(results);
+     }
+
+     console.log("tasks",tasks)
     
   return (
       <main className="flex  flex-col items-center border-dashed border-2 border-indigo-500 h-dvh overflow-scroll">
@@ -153,6 +182,7 @@ const  Home=()=> {
                       handleToggleForm={handleToggleForm}
                       handleAddSubList={handleAddSubList}
                       handleUpdateTask={handleUpdateTask}
+                      handleDeleteTask={handleDeleteTask}
                       />
                    ))
                 }
